@@ -94,6 +94,7 @@ class PostwingSdk:
                 path,
                 data=json.dumps(payload, default=str),
                 headers={"Content-Type": "application/json"},
+                timeout=5,
             )
 
             # Debug log for response
@@ -147,6 +148,7 @@ class PostwingSdk:
                 path,
                 data=json.dumps(payload, default=str),
                 headers={"Content-Type": "application/json"},
+                timeout=5,
             )
 
             # Debug log for response
