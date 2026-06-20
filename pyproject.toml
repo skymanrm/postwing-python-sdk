@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "postwing"
-version = "0.2.0"
+version = "0.4.1"
 description = "Python SDK for Postwing email service API (api.postwing.app)"
 readme = "README.md"
 requires-python = ">=3.7"

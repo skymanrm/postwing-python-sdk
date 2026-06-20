@@ -88,7 +88,7 @@ class PostwingSdk:
                 f"recipient: {recipient}, sender: {sender}, subject: {subject}, "
                 f"idempotency_key: {idempotency_key}"
             )
-            self._logger.debug(f"Request payload: {json.dumps({**payload, 'auth': '***'})}")
+            self._logger.debug(f"Request payload: {json.dumps({**payload, 'auth': '***'}, default=str)}")
 
             res = requests.post(path, json=payload)
 
@@ -137,7 +137,7 @@ class PostwingSdk:
                 f"template: {tpl}, recipient: {recipient}, sender: {sender}, "
                 f"lang: {lang}, idempotency_key: {idempotency_key}"
             )
-            self._logger.debug(f"Request payload: {json.dumps({**payload, 'auth': '***'})}")
+            self._logger.debug(f"Request payload: {json.dumps({**payload, 'auth': '***'}, default=str)}")
 
             res = requests.post(path, json=payload)
 

@@ -1,5 +1,6 @@
 import unittest
 from unittest.mock import patch, Mock, MagicMock
+import logging
 import time
 from concurrent.futures import TimeoutError as FuturesTimeoutError
 
@@ -30,6 +31,64 @@ class PostwingTestUtils(unittest.TestCase):
         with self.assertRaises(PostwingSdkException) as context:
             res = sdk.send("test", faker.email(), faker.email(), "ru", {}, "")
         self.assertIn("err", str(context.exception))
+
+
+class LazyString:
+    """Mimics Django's lazy translation object (``__proxy__``).
+
+    It is not JSON serializable but stringifies to its underlying value,
+    reproducing ``TypeError: Object of type __proxy__ is not JSON serializable``.
+    """
+
+    def __init__(self, value):
+        self._value = value
+
+    def __str__(self):
+        return self._value
+
+
+class PostwingNonSerializableParamsTest(unittest.TestCase):
+    """Reproduces the crash when params contain non-JSON-serializable values."""
+
+    @patch("requests.post")
+    def test_send_with_lazy_param_does_not_raise(self, mock_post):
+        """A lazy/non-serializable param must not break the debug payload log."""
+        mock_post.return_value.ok = True
+        mock_post.return_value.status_code = 200
+        mock_post.return_value.text = "OK"
+
+        sdk = PostwingSdk("test", "test", log_level=logging.DEBUG)
+
+        # Should not raise TypeError from json.dumps in the debug log line.
+        result = sdk.send(
+            tpl="domain_plan_change_success",
+            recipient=faker.email(),
+            sender=faker.email(),
+            lang="en",
+            params={"plan_name": LazyString("Pro plan")},
+        )
+
+        self.assertTrue(result)
+        mock_post.assert_called_once()
+
+    @patch("requests.post")
+    def test_send_simple_with_lazy_body_does_not_raise(self, mock_post):
+        """A lazy/non-serializable value in simple send must not crash logging."""
+        mock_post.return_value.ok = True
+        mock_post.return_value.status_code = 200
+        mock_post.return_value.text = "OK"
+
+        sdk = PostwingSdk("test", "test", log_level=logging.DEBUG)
+
+        result = sdk.send_simple(
+            recipient=faker.email(),
+            sender=faker.email(),
+            subject=LazyString("Welcome"),
+            body=LazyString("<p>Hello</p>"),
+        )
+
+        self.assertTrue(result)
+        mock_post.assert_called_once()
 
 
 class PostwingAsyncTestUtils(unittest.TestCase):
