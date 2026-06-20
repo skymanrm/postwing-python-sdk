@@ -90,7 +90,11 @@ class PostwingSdk:
             )
             self._logger.debug(f"Request payload: {json.dumps({**payload, 'auth': '***'}, default=str)}")
 
-            res = requests.post(path, json=payload)
+            res = requests.post(
+                path,
+                data=json.dumps(payload, default=str),
+                headers={"Content-Type": "application/json"},
+            )
 
             # Debug log for response
             try:
@@ -139,7 +143,11 @@ class PostwingSdk:
             )
             self._logger.debug(f"Request payload: {json.dumps({**payload, 'auth': '***'}, default=str)}")
 
-            res = requests.post(path, json=payload)
+            res = requests.post(
+                path,
+                data=json.dumps(payload, default=str),
+                headers={"Content-Type": "application/json"},
+            )
 
             # Debug log for response
             try:

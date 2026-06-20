@@ -1,5 +1,6 @@
 import unittest
 from unittest.mock import patch, Mock, MagicMock
+import json
 import logging
 import time
 from concurrent.futures import TimeoutError as FuturesTimeoutError
@@ -509,7 +510,7 @@ class PostwingAsyncTestUtils(unittest.TestCase):
         # Verify the underlying requests.post was called with correct data
         self.assertEqual(mock_post.call_count, 1)
         call_kwargs = mock_post.call_args[1]
-        payload = call_kwargs['json']
+        payload = json.loads(call_kwargs['data'])
 
         self.assertEqual(payload['recipient'], recipient)
         self.assertEqual(payload['sender'], sender)
