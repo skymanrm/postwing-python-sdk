@@ -6,33 +6,33 @@ from concurrent.futures import TimeoutError as FuturesTimeoutError
 import requests
 from faker import Faker
 
-from fmailersdk.exceptions import FmailerSdkException
-from fmailersdk.sdk import FmailerSdk
+from postwing.exceptions import PostwingSdkException
+from postwing.sdk import PostwingSdk
 
 faker = Faker()
 
 
-class FmailersdkTestUtils(unittest.TestCase):
+class PostwingTestUtils(unittest.TestCase):
     @patch("requests.post")
     def test_send_simple_exception(self, mock_post):
         mock_post.side_effect = requests.exceptions.ConnectionError()
-        sdk = FmailerSdk("test", "test")
-        with self.assertRaises(FmailerSdkException) as context:
+        sdk = PostwingSdk("test", "test")
+        with self.assertRaises(PostwingSdkException) as context:
             res = sdk.send("test", faker.email(), faker.email(), "ru", {}, "")
-        self.assertTrue("Fmailer" in str(context.exception))
+        self.assertTrue("Postwing" in str(context.exception))
 
     @patch("requests.post")
     def test_send_simple_exception_400(self, mock_post):
         mock_post.return_value.status_code = 400
         mock_post.return_value.ok = False
         mock_post.return_value.text = {"err": "error"}
-        sdk = FmailerSdk("test", "test")
-        with self.assertRaises(FmailerSdkException) as context:
+        sdk = PostwingSdk("test", "test")
+        with self.assertRaises(PostwingSdkException) as context:
             res = sdk.send("test", faker.email(), faker.email(), "ru", {}, "")
         self.assertIn("err", str(context.exception))
 
 
-class FmailersdkAsyncTestUtils(unittest.TestCase):
+class PostwingAsyncTestUtils(unittest.TestCase):
     """Tests for async SDK methods"""
 
     def tearDown(self):
@@ -47,7 +47,7 @@ class FmailersdkAsyncTestUtils(unittest.TestCase):
         mock_post.return_value.ok = True
         mock_post.return_value.status_code = 200
 
-        sdk = FmailerSdk("test", "test")
+        sdk = PostwingSdk("test", "test")
         self.sdk = sdk
 
         future = sdk.send_simple_async(
@@ -75,7 +75,7 @@ class FmailersdkAsyncTestUtils(unittest.TestCase):
         mock_post.return_value.status_code = 200
         mock_post.return_value.text = "OK"
 
-        sdk = FmailerSdk("test", "test")
+        sdk = PostwingSdk("test", "test")
         self.sdk = sdk
 
         future = sdk.send_async(
@@ -103,7 +103,7 @@ class FmailersdkAsyncTestUtils(unittest.TestCase):
         mock_post.return_value.ok = True
         mock_post.return_value.status_code = 200
 
-        sdk = FmailerSdk("test", "test")
+        sdk = PostwingSdk("test", "test")
         self.sdk = sdk
 
         # Create callback mock
@@ -133,7 +133,7 @@ class FmailersdkAsyncTestUtils(unittest.TestCase):
         mock_post.return_value.status_code = 200
         mock_post.return_value.text = "OK"
 
-        sdk = FmailerSdk("test", "test")
+        sdk = PostwingSdk("test", "test")
         self.sdk = sdk
 
         # Create callback mock
@@ -160,7 +160,7 @@ class FmailersdkAsyncTestUtils(unittest.TestCase):
         """Test send_simple_async callback is called on error"""
         mock_post.side_effect = requests.exceptions.ConnectionError()
 
-        sdk = FmailerSdk("test", "test")
+        sdk = PostwingSdk("test", "test")
         self.sdk = sdk
 
         # Create callback mock
@@ -175,7 +175,7 @@ class FmailersdkAsyncTestUtils(unittest.TestCase):
         )
 
         # Wait for completion and expect exception
-        with self.assertRaises(FmailerSdkException):
+        with self.assertRaises(PostwingSdkException):
             future.result(timeout=5)
 
         # Verify callback was called with error
@@ -183,7 +183,7 @@ class FmailersdkAsyncTestUtils(unittest.TestCase):
         args = callback.call_args[0]
         self.assertFalse(args[0])  # result should be False
         self.assertIsNotNone(args[1])  # error should be present
-        self.assertIsInstance(args[1], FmailerSdkException)
+        self.assertIsInstance(args[1], PostwingSdkException)
 
     @patch("requests.post")
     def test_send_async_with_callback_error(self, mock_post):
@@ -192,7 +192,7 @@ class FmailersdkAsyncTestUtils(unittest.TestCase):
         mock_post.return_value.status_code = 400
         mock_post.return_value.text = "Bad Request"
 
-        sdk = FmailerSdk("test", "test")
+        sdk = PostwingSdk("test", "test")
         self.sdk = sdk
 
         # Create callback mock
@@ -206,7 +206,7 @@ class FmailersdkAsyncTestUtils(unittest.TestCase):
         )
 
         # Wait for completion and expect exception
-        with self.assertRaises(FmailerSdkException):
+        with self.assertRaises(PostwingSdkException):
             future.result(timeout=5)
 
         # Verify callback was called with error
@@ -220,7 +220,7 @@ class FmailersdkAsyncTestUtils(unittest.TestCase):
         """Test send_simple_async propagates exceptions"""
         mock_post.side_effect = requests.exceptions.ConnectionError()
 
-        sdk = FmailerSdk("test", "test")
+        sdk = PostwingSdk("test", "test")
         self.sdk = sdk
 
         future = sdk.send_simple_async(
@@ -231,7 +231,7 @@ class FmailersdkAsyncTestUtils(unittest.TestCase):
         )
 
         # Should raise exception when getting result
-        with self.assertRaises(FmailerSdkException):
+        with self.assertRaises(PostwingSdkException):
             future.result(timeout=5)
 
     @patch("requests.post")
@@ -241,7 +241,7 @@ class FmailersdkAsyncTestUtils(unittest.TestCase):
         mock_post.return_value.status_code = 500
         mock_post.return_value.text = "Internal Server Error"
 
-        sdk = FmailerSdk("test", "test")
+        sdk = PostwingSdk("test", "test")
         self.sdk = sdk
 
         future = sdk.send_async(
@@ -251,7 +251,7 @@ class FmailersdkAsyncTestUtils(unittest.TestCase):
         )
 
         # Should raise exception when getting result
-        with self.assertRaises(FmailerSdkException):
+        with self.assertRaises(PostwingSdkException):
             future.result(timeout=5)
 
     @patch("requests.post")
@@ -260,7 +260,7 @@ class FmailersdkAsyncTestUtils(unittest.TestCase):
         mock_post.return_value.ok = True
         mock_post.return_value.status_code = 200
 
-        sdk = FmailerSdk("test", "test", max_workers=3)
+        sdk = PostwingSdk("test", "test", max_workers=3)
         self.sdk = sdk
 
         # Send multiple emails
@@ -296,7 +296,7 @@ class FmailersdkAsyncTestUtils(unittest.TestCase):
 
         mock_post.side_effect = slow_response
 
-        sdk = FmailerSdk("test", "test")
+        sdk = PostwingSdk("test", "test")
         self.sdk = sdk
 
         future = sdk.send_simple_async(
@@ -318,7 +318,7 @@ class FmailersdkAsyncTestUtils(unittest.TestCase):
     @patch("requests.post")
     def test_executor_initialization(self, mock_post):
         """Test executor is lazily initialized"""
-        sdk = FmailerSdk("test", "test", max_workers=10)
+        sdk = PostwingSdk("test", "test", max_workers=10)
         self.sdk = sdk
 
         # Executor should not be created yet
@@ -353,7 +353,7 @@ class FmailersdkAsyncTestUtils(unittest.TestCase):
 
         mock_post.side_effect = slow_response
 
-        sdk = FmailerSdk("test", "test")
+        sdk = PostwingSdk("test", "test")
 
         # Start async request
         future = sdk.send_simple_async(
@@ -386,7 +386,7 @@ class FmailersdkAsyncTestUtils(unittest.TestCase):
 
         mock_post.side_effect = slow_response
 
-        sdk = FmailerSdk("test", "test")
+        sdk = PostwingSdk("test", "test")
 
         # Start async request
         future = sdk.send_simple_async(
@@ -409,7 +409,7 @@ class FmailersdkAsyncTestUtils(unittest.TestCase):
         """Test fail_silently works with async methods"""
         mock_post.side_effect = requests.exceptions.ConnectionError()
 
-        sdk = FmailerSdk("test", "test", fail_silently=True)
+        sdk = PostwingSdk("test", "test", fail_silently=True)
         self.sdk = sdk
 
         future = sdk.send_simple_async(
@@ -430,7 +430,7 @@ class FmailersdkAsyncTestUtils(unittest.TestCase):
         mock_post.return_value.status_code = 200
         mock_post.return_value.text = "OK"
 
-        sdk = FmailerSdk("test", "test")
+        sdk = PostwingSdk("test", "test")
         self.sdk = sdk
 
         recipient = faker.email()

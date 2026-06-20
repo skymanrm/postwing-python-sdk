@@ -1,15 +1,15 @@
 """
-Example usage of FmailerSDK async methods.
+Example usage of PostwingSDK async methods.
 
 The SDK now supports asynchronous email sending using background threads,
 allowing the main thread to continue without waiting for API responses.
 """
 
-from fmailersdk import FmailerSdk
+from postwing import PostwingSdk
 
 
 # Initialize SDK
-sdk = FmailerSdk(
+sdk = PostwingSdk(
     username="your-domain@example.com",
     password="your-token",
     max_workers=10  # Number of concurrent background threads
@@ -152,7 +152,7 @@ def cleanup_example():
 def context_manager_style():
     """Using SDK in a controlled scope"""
 
-    sdk_instance = FmailerSdk(
+    sdk_instance = PostwingSdk(
         username="your-domain@example.com",
         password="your-token"
     )
@@ -171,7 +171,7 @@ def context_manager_style():
 
 
 if __name__ == "__main__":
-    print("FmailerSDK Async Usage Examples")
+    print("PostwingSDK Async Usage Examples")
     print("=" * 50)
 
     # Uncomment to run examples:

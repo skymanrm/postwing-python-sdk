@@ -1,18 +1,18 @@
 """
-Example demonstrating FmailerSDK logging capabilities.
+Example demonstrating PostwingSDK logging capabilities.
 
 This example shows how to configure different log levels and what information
 is logged at each level.
 """
 
 import logging
-from fmailersdk.sdk import FmailerSdk
+from postwing.sdk import PostwingSdk
 
 def example_info_logging():
     """Example with INFO level logging (default)"""
     print("\n=== Example 1: INFO Level Logging (default) ===\n")
 
-    sdk = FmailerSdk(
+    sdk = PostwingSdk(
         username="test@example.com",
         password="test-token",
         log_level=logging.INFO
@@ -34,7 +34,7 @@ def example_debug_logging():
     """Example with DEBUG level logging"""
     print("\n=== Example 2: DEBUG Level Logging ===\n")
 
-    sdk = FmailerSdk(
+    sdk = PostwingSdk(
         username="test@example.com",
         password="test-token",
         log_level=logging.DEBUG
@@ -55,7 +55,7 @@ def example_error_only_logging():
     """Example with ERROR level logging (minimal output)"""
     print("\n=== Example 3: ERROR Level Logging (minimal) ===\n")
 
-    sdk = FmailerSdk(
+    sdk = PostwingSdk(
         username="test@example.com",
         password="test-token",
         log_level=logging.ERROR
@@ -77,12 +77,12 @@ def example_custom_logging():
         level=logging.DEBUG,
         format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
         handlers=[
-            logging.FileHandler('fmailer_debug.log'),
+            logging.FileHandler('postwing_debug.log'),
             logging.StreamHandler()
         ]
     )
 
-    sdk = FmailerSdk(
+    sdk = PostwingSdk(
         username="test@example.com",
         password="test-token",
         log_level=logging.DEBUG
@@ -91,7 +91,7 @@ def example_custom_logging():
     print("Custom configuration:")
     print("- Logs written to both file and console")
     print("- Custom format with timestamps")
-    print("- File: fmailer_debug.log\n")
+    print("- File: postwing_debug.log\n")
 
     sdk.shutdown()
 
@@ -105,11 +105,11 @@ def example_production_config():
         level=logging.INFO,
         format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
         handlers=[
-            logging.FileHandler('fmailer_production.log')
+            logging.FileHandler('postwing_production.log')
         ]
     )
 
-    sdk = FmailerSdk(
+    sdk = PostwingSdk(
         username="test@example.com",
         password="test-token",
         log_level=logging.INFO,
@@ -127,7 +127,7 @@ def example_production_config():
 
 
 if __name__ == "__main__":
-    print("FmailerSDK Logging Examples")
+    print("PostwingSDK Logging Examples")
     print("=" * 60)
 
     example_info_logging()
@@ -139,4 +139,4 @@ if __name__ == "__main__":
     print("\n" + "=" * 60)
     print("Examples complete!")
     print("\nTo actually send emails, replace the credentials with your")
-    print("real Fmailer API credentials and call send_simple() or send()")
+    print("real Postwing API credentials and call send_simple() or send()")

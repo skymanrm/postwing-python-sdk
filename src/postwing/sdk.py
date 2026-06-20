@@ -6,14 +6,14 @@ import requests
 from requests import exceptions
 import json
 
-from .exceptions import FmailerSdkException
+from .exceptions import PostwingSdkException
 
 
 logger = logging.getLogger(__name__)
 
 
-class FmailerSdk:
-    SERVER_URL = "https://api.fmailer.ru"
+class PostwingSdk:
+    SERVER_URL = "https://api.postwing.app"
     auth = {}
     fail_silently = False
     debug = False
@@ -35,7 +35,7 @@ class FmailerSdk:
 
     def __init__(self, username: str, password: str, fail_silently=False, max_workers=5, log_level=logging.INFO):
         """
-        Initialize FmailerSdk.
+        Initialize PostwingSdk.
 
         Args:
             username: API username
@@ -61,7 +61,7 @@ class FmailerSdk:
             handler.setFormatter(formatter)
             self._logger.addHandler(handler)
 
-        self._logger.info(f"FmailerSdk initialized with username={username}, max_workers={max_workers}, log_level={logging.getLevelName(log_level)}")
+        self._logger.info(f"PostwingSdk initialized with username={username}, max_workers={max_workers}, log_level={logging.getLevelName(log_level)}")
 
     def send_simple(
         self,
@@ -101,13 +101,13 @@ class FmailerSdk:
 
             if not res.ok:
                 self._logger.error(f"API error - status: {res.status_code}, response: {res.text}")
-                raise FmailerSdkException(res.text)
+                raise PostwingSdkException(res.text)
 
             self._logger.info(f"Simple email sent successfully to {recipient}")
         except exceptions.RequestException as exc:
             self._logger.error(f"Request exception while sending email: {exc}")
             if not self.fail_silently:
-                raise FmailerSdkException("Fmailer API error") from exc
+                raise PostwingSdkException("Postwing API error") from exc
         return True
 
     def send(
@@ -150,13 +150,13 @@ class FmailerSdk:
 
             if not res.ok:
                 self._logger.error(f"API error - status: {res.status_code}, response: {res.text}")
-                raise FmailerSdkException(str(res.text))
+                raise PostwingSdkException(str(res.text))
 
             self._logger.info(f"Templated email sent successfully to {recipient} using template '{tpl}'")
         except exceptions.RequestException as exc:
             self._logger.error(f"Request exception while sending email: {exc}")
             if not self.fail_silently:
-                raise FmailerSdkException("Fmailer API error") from exc
+                raise PostwingSdkException("Postwing API error") from exc
         return True
 
     def send_simple_async(
@@ -310,5 +310,5 @@ class FmailerSdk:
     def __del__(self):
         """Cleanup executor on garbage collection"""
         if self._logger:
-            self._logger.debug("FmailerSdk instance being destroyed, cleaning up executor")
+            self._logger.debug("PostwingSdk instance being destroyed, cleaning up executor")
         self.shutdown(wait=False)

@@ -4,14 +4,14 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Overview
 
-FmailerSDK is a Python SDK for the Fmailer email service API (api.fmailer.ru). It provides both synchronous and asynchronous methods for sending emails via templates or simple HTML content.
+PostwingSDK is a Python SDK for the Postwing email service API (api.postwing.app). It provides both synchronous and asynchronous methods for sending emails via templates or simple HTML content.
 
 ## Project Structure
 
 ```
-fmailersdk/
+postwing/
 ├── src/
-│   └── fmailersdk/          # Main package source
+│   └── postwing/          # Main package source
 │       ├── __init__.py      # Package initialization
 │       ├── sdk.py           # Core SDK implementation
 │       └── exceptions.py    # Custom exceptions
@@ -30,7 +30,7 @@ fmailersdk/
 
 ### Core Components
 
-1. **FmailerSdk class** (`src/fmailersdk/sdk.py`):
+1. **PostwingSdk class** (`src/postwing/sdk.py`):
    - Main SDK class handling both sync and async email operations
    - Uses lazy-initialized ThreadPoolExecutor for async operations
    - Supports idempotency keys to prevent duplicate sends
@@ -39,8 +39,8 @@ fmailersdk/
      - `send_simple()` / `send_simple_async()`: Send HTML emails directly
      - `send()` / `send_async()`: Send templated emails with parameters
 
-2. **Exception handling** (`src/fmailersdk/exceptions.py`):
-   - Single custom exception: `FmailerSdkException`
+2. **Exception handling** (`src/postwing/exceptions.py`):
+   - Single custom exception: `PostwingSdkException`
    - Used for both API errors and network failures
 
 3. **Logging**:
@@ -85,7 +85,7 @@ make test-sync
 make test-async
 
 # Run a specific test
-make test-specific TEST=tests.test_sdk.FmailersdkAsyncTestUtils.test_send_simple_async_success
+make test-specific TEST=tests.test_sdk.PostwingAsyncTestUtils.test_send_simple_async_success
 ```
 
 Or manually with proper PYTHONPATH:
@@ -98,16 +98,16 @@ PYTHONPATH=/Users/skyman/Documents/My/Python:$PYTHONPATH python -m unittest disc
 Run specific test class:
 ```bash
 source .venv/bin/activate
-PYTHONPATH=/Users/skyman/Documents/My/Python:$PYTHONPATH python -m unittest tests.test_sdk.FmailersdkTestUtils
-PYTHONPATH=/Users/skyman/Documents/My/Python:$PYTHONPATH python -m unittest tests.test_sdk.FmailersdkAsyncTestUtils
+PYTHONPATH=/Users/skyman/Documents/My/Python:$PYTHONPATH python -m unittest tests.test_sdk.PostwingTestUtils
+PYTHONPATH=/Users/skyman/Documents/My/Python:$PYTHONPATH python -m unittest tests.test_sdk.PostwingAsyncTestUtils
 ```
 
 ### Test Structure
 
 Located in `tests/test_sdk.py`:
 
-- `FmailersdkTestUtils`: Tests for synchronous methods
-- `FmailersdkAsyncTestUtils`: Comprehensive async method tests including callbacks, futures, concurrent execution, and executor lifecycle
+- `PostwingTestUtils`: Tests for synchronous methods
+- `PostwingAsyncTestUtils`: Comprehensive async method tests including callbacks, futures, concurrent execution, and executor lifecycle
 
 All tests use mocked `requests.post` to avoid actual API calls.
 
@@ -122,7 +122,7 @@ auth = {"username": username, "password": password}
 
 ### API Endpoints
 
-- Base URL: `https://api.fmailer.ru/external/`
+- Base URL: `https://api.postwing.app/external/`
 - Simple send: `POST /external/send_email_simple/`
 - Template send: `POST /external/send_email_tpl/`
 
@@ -139,11 +139,11 @@ auth = {"username": username, "password": password}
 
 The package uses a standard src/ layout:
 ```python
-from fmailersdk.sdk import FmailerSdk
-from fmailersdk.exceptions import FmailerSdkException
+from postwing.sdk import PostwingSdk
+from postwing.exceptions import PostwingSdkException
 ```
 
 Internal imports within the package use relative imports:
 ```python
-from .exceptions import FmailerSdkException
+from .exceptions import PostwingSdkException
 ```

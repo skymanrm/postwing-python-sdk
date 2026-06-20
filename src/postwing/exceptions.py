@@ -1,4 +1,4 @@
-class FmailerSdkException(Exception):
+class PostwingSdkException(Exception):
     msg = "Unhandled exception"
 
     def __init__(self, msg: str, *args):
@@ -6,4 +6,4 @@ class FmailerSdkException(Exception):
         self.msg = msg
 
     def __str__(self):
-        return f"FmailerSdkException: {self.msg}"
+        return f"PostwingSdkException: {self.msg}"

@@ -1,1 +1,1 @@
-# Tests for FmailerSDK
+# Tests for PostwingSDK

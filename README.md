@@ -1,6 +1,6 @@
-# FmailerSDK
+# PostwingSDK
 
-A Python SDK for the [Fmailer](https://fmailer.ru) email service API. Provides both synchronous and asynchronous methods for sending emails via templates or simple HTML content.
+A Python SDK for the [Postwing](https://postwing.ru) email service API. Provides both synchronous and asynchronous methods for sending emails via templates or simple HTML content.
 
 ## Features
 
@@ -30,10 +30,10 @@ pip install -r requirements.txt
 ## Quick Start
 
 ```python
-from fmailersdk.sdk import FmailerSdk
+from postwing.sdk import PostwingSdk
 
 # Initialize the SDK
-sdk = FmailerSdk(
+sdk = PostwingSdk(
     username="your-domain@example.com",
     password="your-api-token"
 )
@@ -195,7 +195,7 @@ else:
 ```python
 import logging
 
-sdk = FmailerSdk(
+sdk = PostwingSdk(
     username="your-domain@example.com",
     password="your-api-token",
     fail_silently=False,  # If True, suppresses exceptions
@@ -221,10 +221,10 @@ The SDK supports standard Python logging levels:
 
 ```python
 import logging
-from fmailersdk.sdk import FmailerSdk
+from postwing.sdk import PostwingSdk
 
 # Enable DEBUG logging to see detailed request/response information
-sdk = FmailerSdk(
+sdk = PostwingSdk(
     username="your-domain@example.com",
     password="your-api-token",
     log_level=logging.DEBUG
@@ -261,12 +261,12 @@ sdk.send_simple(
 #### Example Output
 
 ```
-2025-11-21 17:36:05,170 - fmailersdk.sdk.4472389120 - INFO - FmailerSdk initialized with username=test, max_workers=5, log_level=INFO
-2025-11-21 17:36:05,171 - fmailersdk.sdk.4472389120 - INFO - Initializing ThreadPoolExecutor with 5 workers
-2025-11-21 17:36:05,171 - fmailersdk.sdk.4472389120 - DEBUG - Sending simple email - URL: https://api.fmailer.ru/external/send_email_simple/, recipient: user@example.com, sender: noreply@example.com, subject: Test, idempotency_key: None
-2025-11-21 17:36:05,171 - fmailersdk.sdk.4472389120 - DEBUG - Request payload: {"recipient": "user@example.com", "sender": "noreply@example.com", "subject": "Test", "body": "<p>Test</p>", "auth": "***"}
-2025-11-21 17:36:05,171 - fmailersdk.sdk.4472389120 - DEBUG - Response received - status_code: 200, response: {"success": true}
-2025-11-21 17:36:05,171 - fmailersdk.sdk.4472389120 - INFO - Simple email sent successfully to user@example.com
+2025-11-21 17:36:05,170 - postwing.sdk.4472389120 - INFO - PostwingSdk initialized with username=test, max_workers=5, log_level=INFO
+2025-11-21 17:36:05,171 - postwing.sdk.4472389120 - INFO - Initializing ThreadPoolExecutor with 5 workers
+2025-11-21 17:36:05,171 - postwing.sdk.4472389120 - DEBUG - Sending simple email - URL: https://api.postwing.app/external/send_email_simple/, recipient: user@example.com, sender: noreply@example.com, subject: Test, idempotency_key: None
+2025-11-21 17:36:05,171 - postwing.sdk.4472389120 - DEBUG - Request payload: {"recipient": "user@example.com", "sender": "noreply@example.com", "subject": "Test", "body": "<p>Test</p>", "auth": "***"}
+2025-11-21 17:36:05,171 - postwing.sdk.4472389120 - DEBUG - Response received - status_code: 200, response: {"success": true}
+2025-11-21 17:36:05,171 - postwing.sdk.4472389120 - INFO - Simple email sent successfully to user@example.com
 ```
 
 #### Disable Logging
@@ -274,7 +274,7 @@ sdk.send_simple(
 To disable all logging output:
 
 ```python
-sdk = FmailerSdk(
+sdk = PostwingSdk(
     username="your-domain@example.com",
     password="your-api-token",
     log_level=logging.CRITICAL  # Only critical errors
@@ -302,13 +302,13 @@ logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
     handlers=[
-        logging.FileHandler('fmailer.log'),
+        logging.FileHandler('postwing.log'),
         logging.StreamHandler()
     ]
 )
 
 # SDK will use the configured logging system
-sdk = FmailerSdk(
+sdk = PostwingSdk(
     username="your-domain@example.com",
     password="your-api-token",
     log_level=logging.DEBUG
@@ -336,16 +336,16 @@ finally:
 
 ## API Reference
 
-### `FmailerSdk`
+### `PostwingSdk`
 
 #### Constructor
 
 ```python
-FmailerSdk(username: str, password: str, fail_silently=False, max_workers=5, log_level=logging.INFO)
+PostwingSdk(username: str, password: str, fail_silently=False, max_workers=5, log_level=logging.INFO)
 ```
 
-- `username` - Your Fmailer account username (typically your domain)
-- `password` - Your Fmailer API token
+- `username` - Your Postwing account username (typically your domain)
+- `password` - Your Postwing API token
 - `fail_silently` - If True, suppresses exceptions on errors
 - `max_workers` - Number of threads for async operations (default: 5)
 - `log_level` - Logging level using Python's logging constants (default: logging.INFO). Use logging.DEBUG for detailed request/response logs
@@ -374,7 +374,7 @@ Shutdown the thread pool executor.
 
 ### Exceptions
 
-#### `FmailerSdkException`
+#### `PostwingSdkException`
 
 Raised when API requests fail or network errors occur. Can be suppressed with `fail_silently=True`.
 
@@ -401,7 +401,7 @@ make test-sync
 make test-async
 
 # Run a specific test
-make test-specific TEST=tests.FmailersdkAsyncTestUtils.test_send_simple_async_success
+make test-specific TEST=tests.PostwingAsyncTestUtils.test_send_simple_async_success
 
 # Build the package
 make build
@@ -425,7 +425,7 @@ make test-sync    # Synchronous tests only
 make test-async   # Asynchronous tests only
 
 # Run a specific test
-make test-specific TEST=tests.FmailersdkAsyncTestUtils.test_send_simple_async_success
+make test-specific TEST=tests.PostwingAsyncTestUtils.test_send_simple_async_success
 ```
 
 #### Manual Test Commands (Without Makefile)
@@ -436,10 +436,10 @@ source .venv/bin/activate
 PYTHONPATH=/Users/skyman/Documents/My/Python:$PYTHONPATH python -m unittest tests
 
 # Run specific test class
-PYTHONPATH=/Users/skyman/Documents/My/Python:$PYTHONPATH python -m unittest tests.FmailersdkTestUtils
+PYTHONPATH=/Users/skyman/Documents/My/Python:$PYTHONPATH python -m unittest tests.PostwingTestUtils
 
 # Run specific test
-PYTHONPATH=/Users/skyman/Documents/My/Python:$PYTHONPATH python -m unittest tests.FmailersdkAsyncTestUtils.test_send_simple_async_success
+PYTHONPATH=/Users/skyman/Documents/My/Python:$PYTHONPATH python -m unittest tests.PostwingAsyncTestUtils.test_send_simple_async_success
 ```
 
 ### Building and Publishing
@@ -482,9 +482,9 @@ See `async_example.py` for comprehensive examples of all async patterns includin
 
 ## API Endpoints
 
-The SDK communicates with the following Fmailer API endpoints:
+The SDK communicates with the following Postwing API endpoints:
 
-- **Base URL**: `https://api.fmailer.ru/external/`
+- **Base URL**: `https://api.postwing.app/external/`
 - **Simple Send**: `POST /external/send_email_simple/`
 - **Template Send**: `POST /external/send_email_tpl/`
 
@@ -498,4 +498,4 @@ Contributions are welcome! Please ensure all tests pass before submitting a pull
 
 ## Support
 
-For issues, questions, or feature requests, please contact Fmailer support or open an issue in this repository.
+For issues, questions, or feature requests, please contact Postwing support or open an issue in this repository.

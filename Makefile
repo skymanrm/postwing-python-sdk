@@ -24,15 +24,15 @@ test:
 
 test-sync:
 	@echo "Running synchronous tests..."
-	@PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m unittest tests.test_sdk.FmailersdkTestUtils
+	@PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m unittest tests.test_sdk.PostwingTestUtils
 
 test-async:
 	@echo "Running asynchronous tests..."
-	@PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m unittest tests.test_sdk.FmailersdkAsyncTestUtils
+	@PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m unittest tests.test_sdk.PostwingAsyncTestUtils
 
 test-specific:
 	@if [ -z "$(TEST)" ]; then \
-		echo "Error: TEST variable not set. Usage: make test-specific TEST=tests.test_sdk.FmailersdkAsyncTestUtils.test_send_simple_async_success"; \
+		echo "Error: TEST variable not set. Usage: make test-specific TEST=tests.test_sdk.PostwingAsyncTestUtils.test_send_simple_async_success"; \
 		exit 1; \
 	fi
 	@echo "Running specific test: $(TEST)"
