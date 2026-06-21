@@ -1,6 +1,6 @@
 # PostwingSDK
 
-A Python SDK for the [Postwing](https://postwing.ru) email service API. Provides both synchronous and asynchronous methods for sending emails via templates or simple HTML content.
+A Python SDK for the [Postwing](https://postwing.app) email service API. Provides both synchronous and asynchronous methods for sending emails via templates or simple HTML content.
 
 ## Features
 
